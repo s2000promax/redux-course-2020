@@ -1,6 +1,7 @@
 //Example video https://www.youtube.com/watch?v=YdYyYMFPa44
 
-import { applyMiddleware, createStore } from 'redux'
+import { applyMiddleware, createStore, compose } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { asyncincrement, changeTheme, decrement, increment } from './redux/actions'
 import { rootReducer } from './redux/rootReducer'
 import './styles.css'
@@ -33,10 +34,20 @@ function logger(state) {
 */
 
 //Example Reduxlogger
-
+/*
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk, logger)
+    compose(
+        applyMiddleware(thunk, logger),
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
+    )
+*/
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(
+        applyMiddleware(thunk, logger)
+    )
     )
 
 addBtn.addEventListener('click', () => {
