@@ -7,6 +7,7 @@ import './styles.css'
 
 //Added middleware
 import  thunk from 'redux-thunk'
+import logger from 'redux-logger'
 
 
 const counter = document.getElementById('counter')
@@ -16,10 +17,27 @@ const subBtn = document.getElementById('sub')
 const asyncBtn = document.getElementById('async')
 const themeBtn = document.getElementById('theme')
 
+//Example moddleware
+/*
+function logger(state) {
+    return function(next) {
+        return function(action) {
+            console.log('Prev.State:', state.getState())
+            console.log('Action:', action)
+            const newState = next(action)
+            console.log('New.State:', newState)
+            return newState
+        }
+    }
+}
+*/
+
+//Example Reduxlogger
+
 const store = createStore(
     rootReducer, 
-    0, 
-    applyMiddleware(thunk)
+    42, 
+    applyMiddleware(thunk, logger)
     )
 
 addBtn.addEventListener('click', () => {
