@@ -1,7 +1,7 @@
 //Example video https://www.youtube.com/watch?v=YdYyYMFPa44
 
 import { applyMiddleware, createStore } from 'redux'
-import { asyncincrement, decrement, increment } from './redux/actions'
+import { asyncincrement, changeTheme, decrement, increment } from './redux/actions'
 import { rootReducer } from './redux/rootReducer'
 import './styles.css'
 
@@ -35,8 +35,7 @@ function logger(state) {
 //Example Reduxlogger
 
 const store = createStore(
-    rootReducer, 
-    42, 
+    rootReducer,
     applyMiddleware(thunk, logger)
     )
 
@@ -54,17 +53,26 @@ asyncBtn.addEventListener('click', () => {
 })
 
 
+
+themeBtn.addEventListener('click', () => {
+    const newTheme = document.body.classList.contains('light') ? 'dark': 'light'
+    store.dispatch(changeTheme(newTheme))
+    
+    
+})
+
+
+
 store.subscribe( ()=> {
     const state = store.getState()
 
-    counter.textContent = state 
+    counter.textContent = state.counter
+
+    document.body.className = state.theme.value;
+
+    //Enable/Disable buttons
+
+    [addBtn, subBtn, themeBtn, asyncBtn].forEach( btn => btn.disabled = state.theme.disabled)
 } )
 
-//First drawing!!!
-
 store.dispatch({type: '__INIT_APP   '})
-
-themeBtn.addEventListener('click', () => {
-    //document.body.classList.toggle('dark')
-    
-})
