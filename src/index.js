@@ -1,8 +1,13 @@
-import { createStore } from './createStore'
+//Example video https://www.youtube.com/watch?v=YdYyYMFPa44
+
+import { applyMiddleware, createStore } from 'redux'
+import { asyncincrement, decrement, increment } from './redux/actions'
 import { rootReducer } from './redux/rootReducer'
 import './styles.css'
 
-//Example video https://www.youtube.com/watch?v=YdYyYMFPa44
+//Added middleware
+import  thunk from 'redux-thunk'
+
 
 const counter = document.getElementById('counter')
 
@@ -11,18 +16,22 @@ const subBtn = document.getElementById('sub')
 const asyncBtn = document.getElementById('async')
 const themeBtn = document.getElementById('theme')
 
-const store = createStore(rootReducer, 0)
+const store = createStore(
+    rootReducer, 
+    0, 
+    applyMiddleware(thunk)
+    )
 
 addBtn.addEventListener('click', () => {
-   store.dispatch({type: 'INCREMENT'}) 
+   store.dispatch(increment()) 
 })
 
 subBtn.addEventListener('click', () => {
-    store.dispatch({type: 'DECREMENT'}) 
+    store.dispatch(decrement()) 
 })
 
 asyncBtn.addEventListener('click', () => {
-    
+    store.dispatch(asyncincrement()) 
     
 })
 
@@ -41,6 +50,3 @@ themeBtn.addEventListener('click', () => {
     //document.body.classList.toggle('dark')
     
 })
-
-
-render()
